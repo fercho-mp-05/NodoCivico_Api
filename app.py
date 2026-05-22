@@ -4,7 +4,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Base de datos temporal en memoria
 reports = []
 
 # Ruta principal
@@ -60,7 +59,9 @@ def create_report():
     ]
 
     for field in required_fields:
+
         if field not in data:
+
             return jsonify({
                 "error": f"Falta el campo: {field}"
             }), 400
@@ -78,10 +79,9 @@ def create_report():
 
     reports.append(new_report)
 
-    return jsonify({
-        "message": "Reporte creado correctamente",
-        "data": new_report
-    }), 201
+    # IMPORTANTE:
+    # Android espera SOLO el objeto
+    return jsonify(new_report), 201
 
 
 # Actualizar reporte
@@ -108,10 +108,9 @@ def update_report(report_id):
     report["location"] = data.get("location", report["location"])
     report["date"] = data.get("date", report["date"])
 
-    return jsonify({
-        "message": "Reporte actualizado",
-        "data": report
-    })
+    # IMPORTANTE:
+    # Android espera SOLO el objeto
+    return jsonify(report)
 
 
 # Eliminar reporte
